@@ -3,14 +3,14 @@ layout: "../layouts/Layout.astro"
 ---
 
 <div class="relative h-screen w-full overflow-hidden">
-  <img src="/bg.png" alt="Background Image" class="absolute top-0 left-0 w-full h-full object-cover filter blur z-[-1]" />
-  
+  <img src="/bg.png" alt="Background Image" class="absolute top-0 left-0 w-full h-full object-cover filter blur-sm z-[-1]" />
+
   <div class="absolute top-0 left-0 w-full h-full bg-black opacity-30 z-[-1]"></div>
 
-  <div class="container flex justify-center items-center h-full relative">
+  <div class="w-full h-full flex justify-center items-center relative">
     <div class="top-bar absolute top-0 w-full flex justify-between p-5">
-      <button class="info-btn bg-white text-black py-2 px-4 rounded">Info</button>
-      <button class="lang-switch-btn bg-white text-black py-2 px-4 rounded">Languages</button>
+      <img src="/info.svg" alt="Info Icon" class="w-6 h-6 absolute top-[15px] left-[15px] cursor-pointer filter invert" />
+      <img src="/globe.svg" alt="Language Icon" class="w-6 h-6 absolute top-[15px] right-0 mr-[15px] cursor-pointer filter invert" />
     </div>
   </div>
 </div>
