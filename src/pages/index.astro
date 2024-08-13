@@ -20,30 +20,32 @@ const handleLanguageSelection = async (code) => {
   await translateWords();
 };
 
+import axios from 'axios';
+
 const translateWords = async () => {
   try {
-    const res = await fetch(new URL('/api/translate.json', import.meta.url), {
-      method: 'POST',
-      body: JSON.stringify({
-        target: currentLanguage
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    console.log("Starting API call to translation endpoint");
+
+    const response = await axios.post('http://localhost:4321/api/translate.json', {
+      target: currentLanguage
     });
 
-    if (!res.ok) {
-      console.error("Fetch failed with status:", res.status);
-      return;
-    }
+    console.log("API response:", response.data);
 
-    const data = await res.json();
-    translatedWords = data.translations;
-    currentWordIndex = 0;
+    const data = response.data;
+    if (data.translations && data.translations.length > 0) {
+      translatedWords = data.translations;
+      currentWordIndex = 0;
+    } else {
+      console.error("No translations received.");
+    }
   } catch (error) {
-    console.error("Error during fetch:", error);
+    console.error("Error during API call:", error);
   }
 };
+
+
+
 
 await translateWords();
 ---

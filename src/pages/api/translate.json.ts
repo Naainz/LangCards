@@ -11,7 +11,7 @@ const englishWords = [
   "apple", "banana", "grape", "orange", "lemon",
 ];
 
-export const post: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request }) => {
   try {
     const { target } = await request.json();
 
