@@ -29,11 +29,45 @@ layout: "../layouts/Layout.astro"
     .info-panel.active {
       left: 0;
     }
-    .info-btn {
+    .language-panel {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background-color: #F5F3F5;
+      border-left: 2px solid #DEE3EB;
+      padding: 20px;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+      transition: right 0.3s ease;
+      z-index: 10;
+      overflow-y: auto;
+    }
+    .language-panel.active {
+      right: 0;
+    }
+    .info-btn,
+    .globe-btn {
       position: absolute;
       top: 15px;
-      left: 15px;
       z-index: 20;
+      cursor: pointer;
+    }
+    .info-btn {
+      left: 15px;
+    }
+    .globe-btn {
+      right: 15px;
+    }
+    .language-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #DEE3EB;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
       cursor: pointer;
     }
   </style>
@@ -47,7 +81,7 @@ layout: "../layouts/Layout.astro"
   <div class="w-full h-full flex justify-center items-center relative">
     <div class="top-bar absolute top-0 w-full flex justify-between p-5">
       <img src="/info.svg" alt="Info Icon" class="w-6 h-6 info-btn cursor-pointer filter invert" id="infoToggle" />
-      <img src="/globe.svg" alt="Language Icon" class="w-6 h-6 absolute top-[15px] right-0 mr-[15px] cursor-pointer filter invert" />
+      <img src="/globe.svg" alt="Language Icon" class="w-6 h-6 globe-btn cursor-pointer filter invert" id="globeToggle" />
     </div>
 
     <div class="bg-[#F5F3F5] border-[5px] border-[#DEE3EB] rounded-lg p-8 w-full max-w-lg h-[400px] sm:w-[90%] sm:max-w-none sm:h-auto flex flex-col justify-between" style="min-height:400px;">
@@ -70,23 +104,35 @@ layout: "../layouts/Layout.astro"
 
   <div id="infoPanel" class="info-panel">
     <h1 class="text-center">Language Flashcards</h1>
-	<br>
+    <br>
     <h2>About This App</h2><br>
     <p>This app is designed to help you learn and memorize information through flashcards. You can mark your progress by selecting "Know" or "Don't Know" for each card.</p>
-	<br><br>
+    <br><br>
     <h3>Features</h3><br>
     <ul>
       <li>Responsive design</li>
       <li>Easy-to-use interface</li>
       <li>Track your learning progress</li>
     </ul>
-	<br><br>
+    <br><br>
     <p>Click the info button again to hide this panel.</p>
+  </div>
+
+  <div id="languagePanel" class="language-panel">
+    <button class="language-button">Button 1</button>
+    <button class="language-button">Button 2</button>
+    <button class="language-button">Button 3</button>
+    <button class="language-button">Button 4</button>
+    <button class="language-button">Button 5</button>
   </div>
 </div>
 
 <script>
   document.getElementById('infoToggle').addEventListener('click', function() {
     document.getElementById('infoPanel').classList.toggle('active');
+  });
+
+  document.getElementById('globeToggle').addEventListener('click', function() {
+    document.getElementById('languagePanel').classList.toggle('active');
   });
 </script>
