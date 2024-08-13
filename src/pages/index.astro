@@ -10,7 +10,31 @@ layout: "../layouts/Layout.astro"
     }
     .flashcard-content {
       font-weight: bold;
-	  font-size: 2.0rem;
+      font-size: 1.5rem;
+    }
+    .info-panel {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 300px;
+      height: 100%;
+      background-color: #F5F3F5;
+      border-right: 2px solid #DEE3EB;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+      transition: left 0.3s ease;
+      z-index: 10;
+      overflow-y: auto;
+    }
+    .info-panel.active {
+      left: 0;
+    }
+    .info-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 20;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -22,7 +46,7 @@ layout: "../layouts/Layout.astro"
 
   <div class="w-full h-full flex justify-center items-center relative">
     <div class="top-bar absolute top-0 w-full flex justify-between p-5">
-      <img src="/info.svg" alt="Info Icon" class="w-6 h-6 absolute top-[15px] left-[15px] cursor-pointer filter invert" />
+      <img src="/info.svg" alt="Info Icon" class="w-6 h-6 info-btn cursor-pointer filter invert" id="infoToggle" />
       <img src="/globe.svg" alt="Language Icon" class="w-6 h-6 absolute top-[15px] right-0 mr-[15px] cursor-pointer filter invert" />
     </div>
 
@@ -43,4 +67,26 @@ layout: "../layouts/Layout.astro"
 
     </div>
   </div>
+
+  <div id="infoPanel" class="info-panel">
+    <h1 class="text-center">Language Flashcards</h1>
+	<br>
+    <h2>About This App</h2><br>
+    <p>This app is designed to help you learn and memorize information through flashcards. You can mark your progress by selecting "Know" or "Don't Know" for each card.</p>
+	<br><br>
+    <h3>Features</h3><br>
+    <ul>
+      <li>Responsive design</li>
+      <li>Easy-to-use interface</li>
+      <li>Track your learning progress</li>
+    </ul>
+	<br><br>
+    <p>Click the info button again to hide this panel.</p>
+  </div>
 </div>
+
+<script>
+  document.getElementById('infoToggle').addEventListener('click', function() {
+    document.getElementById('infoPanel').classList.toggle('active');
+  });
+</script>
