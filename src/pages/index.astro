@@ -8,10 +8,6 @@ layout: "../layouts/Layout.astro"
     body {
       font-family: 'Satoshi', sans-serif;
     }
-    .flashcard-content {
-      font-weight: bold;
-      font-size: 1.5rem;
-    }
     .info-panel {
       position: fixed;
       top: 0;
@@ -70,6 +66,23 @@ layout: "../layouts/Layout.astro"
       text-align: center;
       cursor: pointer;
     }
+
+	#main_content_area {
+      font-weight: bold;
+      font-size: 1.5rem;
+	}
+
+	#main_content_area.active .flashcard-p1 {
+		display: none;
+	}
+
+	#main_content_area.active .flashcard-p2 {
+		display: block;
+	}
+
+	.flashcard-p2 {
+		display: none;
+	}
   </style>
 </head>
 
@@ -86,8 +99,9 @@ layout: "../layouts/Layout.astro"
 
     <div class="bg-[#F5F3F5] border-[5px] border-[#DEE3EB] rounded-lg p-8 w-full max-w-lg h-[400px] sm:w-[90%] sm:max-w-none sm:h-auto flex flex-col justify-between" style="min-height:400px;">
       
-      <div class="flex-grow flex justify-center items-center">
-        <p class="text-center flashcard-content">Flashcard Content Area</p>
+      <div class="flex-grow flex justify-center items-center" id="main_content_area">
+        <p class="text-center flashcard-p1">Flashcard Content Area</p>
+		<p class="text-center flashcard-p2">Flashcard Back Content</p>
       </div>
 
       <div class="flex justify-between mb-[10px] mx-[10px]">
@@ -134,5 +148,9 @@ layout: "../layouts/Layout.astro"
 
   document.getElementById('globeToggle').addEventListener('click', function() {
     document.getElementById('languagePanel').classList.toggle('active');
+  });
+
+  document.getElementById('main_content_area').addEventListener('click', function() {
+	document.getElementById('main_content_area').classList.toggle('active');
   });
 </script>
