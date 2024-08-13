@@ -3,7 +3,7 @@ layout: "../layouts/Layout.astro"
 ---
 
 <div class="relative h-screen w-full overflow-hidden">
-  <img src="/bg.png" alt="Background Image" class="absolute top-0 left-0 w-full h-full object-cover filter blur-sm z-[-1]" />
+  <img src="/bg.png" alt="Background Image" class="absolute top-0 left-0 w-full h-full object-cover filter blur z-[-1]" />
 
   <div class="absolute top-0 left-0 w-full h-full bg-black opacity-30 z-[-1]"></div>
 
@@ -11,6 +11,9 @@ layout: "../layouts/Layout.astro"
     <div class="top-bar absolute top-0 w-full flex justify-between p-5">
       <img src="/info.svg" alt="Info Icon" class="w-6 h-6 absolute top-[15px] left-[15px] cursor-pointer filter invert" />
       <img src="/globe.svg" alt="Language Icon" class="w-6 h-6 absolute top-[15px] right-0 mr-[15px] cursor-pointer filter invert" />
+    </div>
+
+    <div class="bg-[#F5F3F5] border-[5px] border-[#DEE3EB] rounded-lg p-8 w-full max-w-lg h-[400px] sm:w-[90%] sm:max-w-none sm:h-auto" style="min-height:400px;">
     </div>
   </div>
 </div>
