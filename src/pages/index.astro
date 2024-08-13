@@ -1,5 +1,51 @@
 ---
 layout: "../layouts/Layout.astro"
+
+let languages = [
+  { code: 'zh', name: 'Chinese' },
+  { code: 'es', name: 'Spanish' },
+  { code: 'fr', name: 'French' },
+  { code: 'de', name: 'German' },
+  { code: 'ja', name: 'Japanese' },
+];
+
+let currentLanguage = 'zh';
+let translatedWords = [];
+let currentWordIndex = 0;
+
+const wordsToTranslate = ["apple", "banana", "grape", "orange", "lemon"];
+
+const handleLanguageSelection = async (code) => {
+  currentLanguage = code;
+  await translateWords();
+};
+
+const translateWords = async () => {
+  try {
+    const res = await fetch(new URL('/api/translate.json', import.meta.url), {
+      method: 'POST',
+      body: JSON.stringify({
+        target: currentLanguage
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!res.ok) {
+      console.error("Fetch failed with status:", res.status);
+      return;
+    }
+
+    const data = await res.json();
+    translatedWords = data.translations;
+    currentWordIndex = 0;
+  } catch (error) {
+    console.error("Error during fetch:", error);
+  }
+};
+
+await translateWords();
 ---
 
 <head>
@@ -67,22 +113,22 @@ layout: "../layouts/Layout.astro"
       cursor: pointer;
     }
 
-	#main_content_area {
+    #main_content_area {
       font-weight: bold;
       font-size: 1.5rem;
-	}
+    }
 
-	#main_content_area.active .flashcard-p1 {
-		display: none;
-	}
+    #main_content_area.active .flashcard-p1 {
+      display: none;
+    }
 
-	#main_content_area.active .flashcard-p2 {
-		display: block;
-	}
+    #main_content_area.active .flashcard-p2 {
+      display: block;
+    }
 
-	.flashcard-p2 {
-		display: none;
-	}
+    .flashcard-p2 {
+      display: none;
+    }
   </style>
 </head>
 
@@ -100,15 +146,19 @@ layout: "../layouts/Layout.astro"
     <div class="bg-[#F5F3F5] border-[5px] border-[#DEE3EB] rounded-lg p-8 w-full max-w-lg h-[400px] sm:w-[90%] sm:max-w-none sm:h-auto flex flex-col justify-between" style="min-height:400px;">
       
       <div class="flex-grow flex justify-center items-center" id="main_content_area">
-        <p class="text-center flashcard-p1">Flashcard Content Area</p>
-		<p class="text-center flashcard-p2">Flashcard Back Content</p>
+        <p class="text-center flashcard-p1">
+          {translatedWords.length > 0 ? translatedWords[currentWordIndex].translated : "Flashcard Content Area"}
+        </p>
+        <p class="text-center flashcard-p2">
+          {translatedWords.length > 0 ? translatedWords[currentWordIndex].original : "Flashcard Back Content"}
+        </p>
       </div>
 
       <div class="flex justify-between mb-[10px] mx-[10px]">
-        <button class="bg-[#F5F3F5] border border-[#000] text-black rounded-[10px] py-2 px-4 w-[calc(50%-10px)]">
+        <button onClick={() => currentWordIndex = (currentWordIndex + 1) % translatedWords.length} class="bg-[#F5F3F5] border border-[#000] text-black rounded-[10px] py-2 px-4 w-[calc(50%-10px)]">
           Don't Know
         </button>
-        <button class="bg-[#F5F3F5] border border-[#000] text-black rounded-[10px] py-2 px-4 w-[calc(50%-10px)]">
+        <button onClick={() => currentWordIndex = (currentWordIndex + 1) % translatedWords.length} class="bg-[#F5F3F5] border border-[#000] text-black rounded-[10px] py-2 px-4 w-[calc(50%-10px)]">
           Know
         </button>
       </div>
@@ -133,11 +183,14 @@ layout: "../layouts/Layout.astro"
   </div>
 
   <div id="languagePanel" class="language-panel">
-    <button class="language-button">Button 1</button>
-    <button class="language-button">Button 2</button>
-    <button class="language-button">Button 3</button>
-    <button class="language-button">Button 4</button>
-    <button class="language-button">Button 5</button>
+    {languages.map(lang => (
+      <button
+        class="language-button"
+        onClick={() => handleLanguageSelection(lang.code)}
+      >
+        {lang.name}
+      </button>
+    ))}
   </div>
 </div>
 
@@ -151,6 +204,6 @@ layout: "../layouts/Layout.astro"
   });
 
   document.getElementById('main_content_area').addEventListener('click', function() {
-	document.getElementById('main_content_area').classList.toggle('active');
+    document.getElementById('main_content_area').classList.toggle('active');
   });
 </script>
