@@ -2,6 +2,19 @@
 layout: "../layouts/Layout.astro"
 ---
 
+<head>
+  <link href="https://fonts.cdnfonts.com/css/satoshi" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Satoshi', sans-serif;
+    }
+    .flashcard-content {
+      font-weight: bold;
+	  font-size: 2.0rem;
+    }
+  </style>
+</head>
+
 <div class="relative h-screen w-full overflow-hidden">
   <img src="/bg.png" alt="Background Image" class="absolute top-0 left-0 w-full h-full object-cover filter blur z-[-1]" />
 
@@ -16,7 +29,7 @@ layout: "../layouts/Layout.astro"
     <div class="bg-[#F5F3F5] border-[5px] border-[#DEE3EB] rounded-lg p-8 w-full max-w-lg h-[400px] sm:w-[90%] sm:max-w-none sm:h-auto flex flex-col justify-between" style="min-height:400px;">
       
       <div class="flex-grow flex justify-center items-center">
-        <p class="text-center">Flashcard Content Area</p>
+        <p class="text-center flashcard-content">Flashcard Content Area</p>
       </div>
 
       <div class="flex justify-between mb-[10px] mx-[10px]">
