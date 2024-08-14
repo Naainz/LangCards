@@ -227,5 +227,13 @@ let currentLanguage = 'zh';
     mainContentArea.classList.toggle('flip');
   });
 
+  document.getElementById('infoToggle').addEventListener('click', () => {
+    document.getElementById('infoPanel').classList.toggle('active');
+  });
+
+  document.getElementById('globeToggle').addEventListener('click', () => {
+    document.getElementById('languagePanel').classList.toggle('active');
+  });
+
   translateWords();
 </script>
