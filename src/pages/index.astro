@@ -10,44 +10,6 @@ let languages = [
 ];
 
 let currentLanguage = 'zh';
-let translatedWords = [];
-let currentWordIndex = 0;
-
-const wordsToTranslate = ["apple", "banana", "grape", "orange", "lemon"];
-
-const handleLanguageSelection = async (code) => {
-  currentLanguage = code;
-  await translateWords();
-};
-
-import axios from 'axios';
-
-const translateWords = async () => {
-  try {
-    console.log("Starting API call to translation endpoint");
-
-    const response = await axios.post('http://localhost:4321/api/translate.json', {
-      target: currentLanguage
-    });
-
-    console.log("API response:", response.data);
-
-    const data = response.data;
-    if (data.translations && data.translations.length > 0) {
-      translatedWords = data.translations;
-      currentWordIndex = 0;
-    } else {
-      console.error("No translations received.");
-    }
-  } catch (error) {
-    console.error("Error during API call:", error);
-  }
-};
-
-
-
-
-await translateWords();
 ---
 
 <head>
@@ -137,7 +99,6 @@ await translateWords();
 
 <div class="relative h-screen w-full overflow-hidden">
   <img src="/bg.png" alt="Background Image" class="absolute top-0 left-0 w-full h-full object-cover filter blur z-[-1]" />
-
   <div class="absolute top-0 left-0 w-full h-full bg-black opacity-30 z-[-1]"></div>
 
   <div class="w-full h-full flex justify-center items-center relative">
@@ -150,18 +111,18 @@ await translateWords();
       
       <div class="flex-grow flex justify-center items-center" id="main_content_area">
         <p class="text-center flashcard-p1">
-          {translatedWords.length > 0 ? translatedWords[currentWordIndex].translated : "Flashcard Content Area"}
+          Flashcard Content Area
         </p>
         <p class="text-center flashcard-p2">
-          {translatedWords.length > 0 ? translatedWords[currentWordIndex].original : "Flashcard Back Content"}
+          Flashcard Back Content
         </p>
       </div>
 
       <div class="flex justify-between mb-[10px] mx-[10px]">
-        <button onClick={() => currentWordIndex = (currentWordIndex + 1) % translatedWords.length} class="bg-[#F5F3F5] border border-[#000] text-black rounded-[10px] py-2 px-4 w-[calc(50%-10px)]">
+        <button id="dontKnowBtn" class="bg-[#F5F3F5] border border-[#000] text-black rounded-[10px] py-2 px-4 w-[calc(50%-10px)]">
           Don't Know
         </button>
-        <button onClick={() => currentWordIndex = (currentWordIndex + 1) % translatedWords.length} class="bg-[#F5F3F5] border border-[#000] text-black rounded-[10px] py-2 px-4 w-[calc(50%-10px)]">
+        <button id="knowBtn" class="bg-[#F5F3F5] border border-[#000] text-black rounded-[10px] py-2 px-4 w-[calc(50%-10px)]">
           Know
         </button>
       </div>
@@ -187,10 +148,7 @@ await translateWords();
 
   <div id="languagePanel" class="language-panel">
     {languages.map(lang => (
-      <button
-        class="language-button"
-        onClick={() => handleLanguageSelection(lang.code)}
-      >
+      <button class="language-button" onclick={`handleLanguageSelection('${lang.code}')`}>
         {lang.name}
       </button>
     ))}
@@ -198,15 +156,53 @@ await translateWords();
 </div>
 
 <script>
-  document.getElementById('infoToggle').addEventListener('click', function() {
-    document.getElementById('infoPanel').classList.toggle('active');
-  });
+  window.translatedWords = [];
+  window.currentWordIndex = 0;
+  let currentLanguage = 'zh'; // Default language
 
-  document.getElementById('globeToggle').addEventListener('click', function() {
-    document.getElementById('languagePanel').classList.toggle('active');
-  });
+  async function translateWords() {
+    try {
+      const res = await fetch('/api/translate.json', {
+        method: 'POST',
+        body: JSON.stringify({ target: currentLanguage }),
+        headers: { 'Content-Type': 'application/json' }
+      });
 
-  document.getElementById('main_content_area').addEventListener('click', function() {
-    document.getElementById('main_content_area').classList.toggle('active');
-  });
+      if (!res.ok) {
+        console.error("Fetch failed with status:", res.status);
+        return;
+      }
+
+      const data = await res.json();
+      window.translatedWords = data.translations;
+      window.currentWordIndex = 0;
+      updateUI();
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+  }
+
+  function handleKnow() {
+    moveToNextWord();
+  }
+
+  function handleDontKnow() {
+    moveToNextWord();
+  }
+
+  function moveToNextWord() {
+    window.currentWordIndex = (window.currentWordIndex + 1) % window.translatedWords.length;
+    updateUI();
+  }
+
+  function updateUI() {
+    document.querySelector('.flashcard-p1').innerText = window.translatedWords[window.currentWordIndex]?.translated || 'Flashcard Content Area';
+    document.querySelector('.flashcard-p2').innerText = window.translatedWords[window.currentWordIndex]?.original || 'Flashcard Back Content';
+  }
+
+  document.getElementById('knowBtn').onclick = handleKnow;
+  document.getElementById('dontKnowBtn').onclick = handleDontKnow;
+
+  // Initialize translation on page load
+  translateWords();
 </script>
