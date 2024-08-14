@@ -235,5 +235,10 @@ let currentLanguage = 'zh';
     document.getElementById('languagePanel').classList.toggle('active');
   });
 
+  window.handleLanguageSelection = function(code) {
+    currentLanguage = code;
+    translateWords();
+  }
+
   translateWords();
 </script>
