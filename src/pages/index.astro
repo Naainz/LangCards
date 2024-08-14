@@ -217,11 +217,70 @@ let currentLanguage = 'en';
     .flip {
       transform: rotateY(180deg);
     }
+
+    /* dark mode */
+    body.dark-mode {
+      background-color: #131313;
+      color: #f5f5f5;
+    }
+
+    body.dark-mode .info-panel,
+    body.dark-mode .language-panel {
+      background-color: #333333;
+      color: #f5f5f5;
+      border-color: #555555;
+    }
+
+    body.dark-mode .bg-img {
+      display: none;
+    }
+
+    body.dark-mode .dark-bg-img {
+      display: block;
+    }
+
+    body.dark-mode .language-button {
+      background-color: #444444;
+      color: #f5f5f5;
+      border-color: #666666;
+    }
+
+    body.dark-mode .bg-[#F5F3F5] {
+      background-color: #333333 !important;
+      color: #f5f5f5;
+      border-color: #555555 !important;
+    }
+
+    body .flashcard-p1, 
+    body .flashcard-p2 {
+      color: #000 !important;
+    }
+
+    .dark-bg-img {
+      display: none;
+    }
+
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .dark-mode-label {
+      margin-right: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    #darkModeToggle {
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <div class="relative h-screen w-full overflow-hidden">
-  <img src="/bg.png" alt="Background Image" class="absolute top-0 left-0 w-full h-full object-cover filter blur z-[-1]" />
+  <img src="/bg.png" alt="Background Image" class="bg-img absolute top-0 left-0 w-full h-full object-cover filter blur z-[-1]" />
+  <img src="/bg-dark.png" alt="Dark Background Image" class="dark-bg-img absolute top-0 left-0 w-full h-full object-cover filter blur z-[-1]" />
   <div class="absolute top-0 left-0 w-full h-full bg-black opacity-30 z-[-1]"></div>
 
   <div class="w-full h-full flex justify-center items-center relative">
@@ -267,7 +326,13 @@ let currentLanguage = 'en';
     </ul>
     <br><br>
     <p>Click the info button again to hide this panel.</p>
+  
+    <div class="toggle-container">
+      <label for="darkModeToggle" class="dark-mode-label">Dark Mode</label>
+      <input type="checkbox" id="darkModeToggle" />
+    </div>
   </div>
+  
 
   <div id="languagePanel" class="language-panel">
     {languages.map(lang => (
@@ -344,4 +409,9 @@ let currentLanguage = 'en';
   }
 
   translateWords();
+
+  document.getElementById('darkModeToggle').addEventListener('change', function() {
+    document.body.classList.toggle('dark-mode');
+  });
+
 </script>
